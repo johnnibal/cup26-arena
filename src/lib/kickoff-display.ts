@@ -18,10 +18,15 @@ const dateOpts: Intl.DateTimeFormatOptions = {
   year: "numeric",
 };
 
+// en-GB + hour12:false so SSR (Node) and the browser agree, and times match
+// `formatKickoffTime` in match.ts — schedule is stored as Europe/Berlin wall clock.
+const dateLocale = "en-GB";
+
 const timeOpts: Intl.DateTimeFormatOptions = {
   timeZone: KICKOFF_DISPLAY_TIME_ZONE,
   hour: "2-digit",
   minute: "2-digit",
+  hour12: false,
 };
 
 const dayKeyOpts: Intl.DateTimeFormatOptions = {
@@ -31,14 +36,14 @@ const dayKeyOpts: Intl.DateTimeFormatOptions = {
   day: "2-digit",
 };
 
-/** Long date in the user's locale, Europe/Berlin wall time. */
+/** Long date in Europe/Berlin (en-GB weekday/month for stable SSR + hydration). */
 export function formatKickoffDateLocal(isoString: string): string {
-  return new Intl.DateTimeFormat(undefined, dateOpts).format(new Date(isoString));
+  return new Intl.DateTimeFormat(dateLocale, dateOpts).format(new Date(isoString));
 }
 
-/** Time (locale default hour cycle) in Europe/Berlin. */
+/** 24-hour time in Europe/Berlin (always e.g. 21:00, not locale-dependent 12-hour). */
 export function formatKickoffTimeLocal(isoString: string): string {
-  return new Intl.DateTimeFormat(undefined, timeOpts).format(new Date(isoString));
+  return new Intl.DateTimeFormat(dateLocale, timeOpts).format(new Date(isoString));
 }
 
 /** Calendar day key in Europe/Berlin (YYYY-MM-DD). */

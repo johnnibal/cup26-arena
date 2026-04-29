@@ -1,0 +1,121 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+
+    --heading: #f4f4f5;
+    --muted: #a8b9ca;
+
+    --brand-primary: #0b1b3a;
+    --brand-accent: #e63946;
+    --brand-ink: #c4ced9;
+
+    --surface: rgba(22, 30, 44, 0.78);
+    --surface-elevated: rgba(30, 40, 58, 0.92);
+    --surface-muted: rgba(11, 15, 24, 0.94);
+    --surface-border: rgba(255, 255, 255, 0.09);
+
+    /* Defaults when no favorite team (ThemeProvider overrides). */
+    --team-primary: var(--brand-primary);
+    --team-secondary: #c1121f;
+    --team-accent: var(--brand-accent);
+    --team-tertiary: #1e3a5f;
+    --team-ink: #ffffff;
+    --team-gradient: linear-gradient(135deg, #0b1b3a 0%, #e63946 45%, #3d5a80 100%);
+    --team-gradient-subtle: linear-gradient(
+      145deg,
+      rgba(11, 27, 58, 0.5) 0%,
+      rgba(230, 57, 70, 0.22) 55%,
+      rgba(11, 27, 58, 0.08) 100%
+    );
+    --team-glow: 0 0 48px -10px rgba(230, 57, 70, 0.4), 0 0 96px -28px rgba(11, 27, 58, 0.35);
+    --team-ambient: rgba(230, 57, 70, 0.14);
+    --team-ambient-soft: rgba(59, 130, 246, 0.07);
+  }
+
+  html,
+  body {
+    height: 100%;
+  }
+
+  body {
+    @apply text-brand-ink antialiased;
+    font-family: var(--font-sans);
+    background-color: #06080d;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .arena-shell::before {
+      animation: none;
+    }
+  }
+}
+
+@layer utilities {
+  .arena-shell {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .arena-shell::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 130% 85% at 50% -25%, var(--team-ambient-soft), transparent 58%),
+      radial-gradient(ellipse 100% 65% at 95% 35%, var(--team-ambient), transparent 52%),
+      radial-gradient(ellipse 85% 55% at 5% 85%, var(--team-ambient-soft), transparent 48%),
+      linear-gradient(180deg, #0a0e16 0%, #06080d 42%, #04060a 100%);
+    animation: arena-shift 24s ease-in-out infinite;
+  }
+
+  .arena-shell::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse 55% 45% at 50% 100%, rgba(255, 255, 255, 0.045), transparent 72%);
+    opacity: 0.95;
+  }
+
+  .glass-panel {
+    @apply border border-white/[0.09] shadow-card backdrop-blur-xl;
+    background-color: var(--surface);
+    box-shadow: 0 4px 32px -10px rgba(0, 0, 0, 0.5);
+  }
+
+  .glass-panel-soft {
+    @apply border border-white/[0.07] backdrop-blur-md;
+    background-color: rgb(22 30 44 / 0.55);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset;
+  }
+
+  .team-border-gradient {
+    border: 1px solid transparent;
+    background:
+      linear-gradient(var(--surface), var(--surface)) padding-box,
+      var(--team-gradient) border-box;
+  }
+
+  .team-pulse-bg {
+    background-image: var(--team-gradient-subtle);
+  }
+}
+
+@keyframes arena-shift {
+  0%,
+  100% {
+    filter: hue-rotate(0deg) brightness(1);
+    transform: scale(1);
+  }
+  50% {
+    filter: hue-rotate(-6deg) brightness(1.04);
+    transform: scale(1.015);
+  }
+}

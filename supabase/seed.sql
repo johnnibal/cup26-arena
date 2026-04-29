@@ -1,0 +1,5 @@
+-- Cup26 Arena - seed entry point.
+-- Reference data (teams, group-stage fixtures) lives in `supabase/migrations/`
+-- so it is applied in every environment. This file is reserved for
+-- development-only fixtures (e.g. test users, example predictions) and is
+-- currently empty. It runs after migrations on `supabase db reset`.
